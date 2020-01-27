@@ -8,9 +8,6 @@ tags:
   - fluid dynamics
 
 authors:
-  - name: Mahendra K. Verma
-    orcid: 0000-0002-3380-4561
-    affiliation: 2
   - name: Roshan Samuel
     orcid: 0000-0002-1280-9881
     affiliation: 1
@@ -22,6 +19,9 @@ authors:
     affiliation: 2
   - name: Soumyadeep Chatterjee
     orcid: 0000-0001-7957-1727
+    affiliation: 2
+  - name: Mahendra K. Verma
+    orcid: 0000-0002-3380-4561
     affiliation: 2
 
 affiliations:
@@ -44,7 +44,7 @@ Usually the resultant PDEs are not amenable to analytical tools for
 solving them, and numerical techniques remain the only resort in such cases.
 As a result, efficiently solving PDEs numerically is a primary step towards
 understanding the physics of various systems.
-``SARAS`` is a general-purpose PDE solver written in objective C++.
+``SARAS`` is a general-purpose PDE solver written in object-oriented C++.
 In ``SARAS``, the underlying mathematical constructs used to define a PDE, like
 vector and scalar fields, are defined as classes.
 Moreover, vector calculus operations associated with such fields, like gradient and
@@ -119,6 +119,10 @@ The initial Reynolds number of the flow is $\mathrm{Re} = 1000$.
 We choose a constant $dt = 0.001$ for time-integration.
 Besides, we use a uniformly spaced mesh along all the three directions. 
 
+![For the flow simulation of decaying turbulence on a $256^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
+  (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
+  (b) plot of $E_u(k)$ vs $k$ at $t =1$. \label{figure1}](figure1.png)
+
 Our results exhibit similarity with results obtained from the pseudo-spectral code, ``TARANG`` [@Chatterjee:JPDC2018].
 The time-evolution of total kinetic energy ($\int d{\bf r} (u^2/2))$, is plotted in Figure \ref{figure1}(a).
 The results from ``SARAS`` closely match the values from ``TARANG``, with a maximum difference between the two energies of approximately $2.4\%$.
@@ -127,10 +131,6 @@ Here, the vertical component of vorticity, $\omega_z$, on the horizontal mid-pla
 In Figure \ref{figure1}(b), we plot the energy spectrum at $t=1$.
 The plot exhibits nearly similar multiscale evolution of the flow fields.
 Interestingly, both the results the energy spectrum in the inertial range are closer to Kolmogorovs $k^{-5/3}$ prediction. 
-
-![For the flow simulation of decaying turbulence on a $256^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
-  (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
-  (b) plot of $E_u(k)$ vs $k$ at $t =1$. \label{figure1}](figure1.png)
 
 ![For the flow simulation of decaying turbulence on a $256^3$ grid,
   vector plots of the velocity field and density plots of the vertical vorticity field ($\omega_z$) for the horizontal mid plane at $z=1/2$:
