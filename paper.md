@@ -61,10 +61,10 @@ initial conditions, source terms, and so on.
 ``SARAS`` also includes solvers for hydrodynamic flow, namely the incompressible
 Navier-Stokes initial value problem (IVP), as well as for scalar convection,
 like Rayleigh Benard Convection.
-Presently, we use semi-implicit Crank-Nicholson [@Crank:1947] for time-advancing
+Presently, we use semi-implicit Crank-Nicholson [@Crank:1947] method for time-advancing
 the IVP.
 The solver uses Marker and Cell method (MAC) [@Harlow:PF1965] for discretizing
-the velocity and pressure field.
+the velocity and pressure fields.
 
 # Mathematics
 
@@ -101,6 +101,12 @@ $$\nabla^2 p^* = \frac{\nabla.\mathbf{u}^*}{\Delta t}. $$
 ``SARAS`` uses a Geometric Multigrid library to solve the above equation [@Wesseling:MG2004; @Briggs:MG2000].
 Presently the library offers the Full Multigrid (FMG) V-Cycle to solve the Poisson equation.
 Other methods like F-Cycle and W-Cycle are planned updates to the library in future.
+
+Finally, using this computed value of pressure correction, the velocity and pressure fields corresponding to the next time-step can now be obtained as
+$$p^{n+1} = p^n + p^*,$$
+$$\mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t(\nabla p^*). $$
+The solver also supports adaptive time-stepping, where the Courant-Friedrichs-Lewy (CFL) condition [@Courant:1928CFL] is used to dynamically compute the appropriate time-step
+from the velocity field.
 
 ![For the flow simulation of decaying turbulence on a $256^3$ grid,
   vector plots of the velocity field and density plots of the vertical vorticity field ($\omega_z$) computed at the horizontal mid plane at $z=1/2$:
