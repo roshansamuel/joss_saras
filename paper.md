@@ -75,6 +75,10 @@ the forcing term, and $\nu$ is the kinematic viscosity of the fluid.
 The fluid is assumed incompressible. Hence $\nabla\cdot\mathbf{u} = 0$, and density is
 assumed constant and equal to unity.
 
+![For the flow simulation of decaying turbulence on a $256^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
+  (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
+  (b) plot of $E_u(k)$ vs $k$ at $t =1$. \label{figure1}](figure1.png)
+
 If the velocity and pressure field at time $t = n$ are denoted as $\mathbf{u}^n$ and $p^n$
 respectively, then the corresponding fields at the next time-step, $t = n+1$, namely
 $\mathbf{u}^{n+1}$ and $p^{n+1}$, can be calculated as described next [@Patankar:1972IJHMT].
@@ -98,6 +102,10 @@ $$\nabla^2 p^* = \frac{\nabla.\mathbf{u}^*}{\Delta t}. $$
 Presently the library offers the Full Multigrid (FMG) V-Cycle to solve the Poisson equation.
 Other methods like F-Cycle and W-Cycle are planned updates to the library in future.
 
+![For the flow simulation of decaying turbulence on a $256^3$ grid,
+  vector plots of the velocity field and density plots of the vertical vorticity field ($\omega_z$) computed at the horizontal mid plane at $z=1/2$:
+  for the data  from (a, c) ``TARANG``,  and (b, d) ``SARAS`` at $t=1$ and $t=3$. \label{figure2}](figure2.png)
+
 # Results
 We validate our code using two very well-known problems.
 We simulate these problems using ``SARAS`` and compare the results with standard and validated solutions. 
@@ -119,34 +127,28 @@ The initial Reynolds number of the flow is $\mathrm{Re} = 1000$.
 We choose a constant $dt = 0.001$ for time-integration.
 Besides, we use a uniformly spaced mesh along all the three directions. 
 
-![For the flow simulation of decaying turbulence on a $256^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
-  (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
-  (b) plot of $E_u(k)$ vs $k$ at $t =1$. \label{figure1}](figure1.png)
-
-Our results exhibit similarity with results obtained from the pseudo-spectral code, ``TARANG`` [@Chatterjee:JPDC2018].
-The time-evolution of total kinetic energy ($\int d{\bf r} (u^2/2))$, is plotted in Figure \ref{figure1}(a).
-The results from ``SARAS`` closely match the values from ``TARANG``, with a maximum difference between the two energies of approximately $2.4\%$.
-Besides, the flow profiles are also quite similar, as is evident from the density plots of Figure \ref{figure2}.
+Our results exhibit similarities with those obtained from the pseudo-spectral code, ``TARANG`` [@Chatterjee:JPDC2018].
+The time-evolution of total kinetic energy ($\int d{\bf r} (u^2/2)$) is plotted in Figure \ref{figure1}(a).
+The results from ``SARAS`` closely match the values from ``TARANG``,
+with a maximum difference between the two energies of approximately $2.4\%$.
+Besides, the flow profiles are also similar, as is evident from the density plots of Figure \ref{figure2}.
 Here, the vertical component of vorticity, $\omega_z$, on the horizontal mid-plane is plotted at $t=1$ and $t=3$.
 In Figure \ref{figure1}(b), we plot the energy spectrum at $t=1$.
 The plot exhibits nearly similar multiscale evolution of the flow fields.
-Interestingly, both the results the energy spectrum in the inertial range are closer to Kolmogorovs $k^{-5/3}$ prediction. 
-
-![For the flow simulation of decaying turbulence on a $256^3$ grid,
-  vector plots of the velocity field and density plots of the vertical vorticity field ($\omega_z$) for the horizontal mid plane at $z=1/2$:
-  for the data  from (a, c) ``TARANG``,  and (b, d) ``SARAS`` at $t=1$ and $t=3$. \label{figure2}](figure2.png)
-
-## Problem 2
-We solve the two-dimensional lid-driven cavity (LDC) problem using ``SARAS``,
-and compare the results with those of `@Ghia:JCP1982`.
-In this setup, we apply no-slip boundary condition on all the four walls.
-However, the top wall is moving to the right with a constant velocity of $U = 1.0$,
-and this serves as the reference velocity for non-dimensionalization of the problem.
-At the start of the simulation, the velocity of the fluid is zero throughout the domain.
+Interestingly, in both the results the energy spectrum in the inertial range is closer to the $k^{-5/3}$ prediction of Kolmogorov [@Kolmogorov:DANS1941Dissipation; @Kolmogorov:DANS1941Structure]. 
 
 ![Results from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines), along with the data from [@Ghia:JCP1982] (blue stars):
   (a) The vertical profile of the x-component of velocity, $v_x$, along the line across the geometric center of the cavity
   (b) The horizontal profile of the y-compnent of velocity, $v_y$, along the line across the geometric center of the cavity. \label{figure3}](figure3.png)
+
+## Problem 2
+We solve the two-dimensional lid-driven cavity (LDC) problem using ``SARAS``,
+and compare the results with those of `@Ghia:JCP1982`.
+LDC is an important fluid dynamic system serving as a benchmark for testing numerical methods.
+In this setup, we apply no-slip boundary condition on all the four walls.
+However, the top wall is moving to the right with a constant velocity of $U = 1.0$,
+and this serves as the reference velocity for non-dimensionalization of the problem.
+At the start of the simulation, the velocity of the fluid is zero throughout the domain.
 
 Thus, the fluid inside the cavity is driven impulsively by the top lid at the start of the simulation.
 This results in the formation of a vortex at the upper-right corner of the cavity,
