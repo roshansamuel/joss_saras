@@ -143,13 +143,15 @@ Interestingly, in both the results the energy spectrum in the inertial range is 
 
 ## Problem 2
 We solve the two-dimensional lid-driven cavity (LDC) problem using ``SARAS``,
-and compare the results with those of `@Ghia:JCP1982`.
+and compare the results with those of [@Ghia:JCP1982].
 LDC is an important fluid dynamic system serving as a benchmark for testing numerical methods.
-In this setup, we apply no-slip boundary condition on all the four walls.
-However, the top wall is moving to the right with a constant velocity of $U = 1.0$,
+The system comprises of a square cavity of dimension $1 \times 1$
+with no-slip boundary conditions on all the four walls.
+However, the top wall is moving laterally to the right with a constant velocity of $U = 1.0$,
 and this serves as the reference velocity for non-dimensionalization of the problem.
-At the start of the simulation, the velocity of the fluid is zero throughout the domain.
+The side of the cavity, $L = 1.0$, is the reference length.
 
+At the start of the simulation, the velocity of the fluid is zero throughout the domain.
 Thus, the fluid inside the cavity is driven impulsively by the top lid at the start of the simulation.
 This results in the formation of a vortex at the upper-right corner of the cavity,
 and this vortex rapidly grows in size and occupies the entire bulk of the cavity.
@@ -159,12 +161,12 @@ and the solver computes this solution with 4 MPI processes in under 12 minutes o
 This case is also used as a test case for validation of the solver after its installation.
 
 The bash and Python scripts used to run this test are supplied with the solver.
-Upon running the testing script, the solver is compiled and run using a
+Upon running the test script, the solver is compiled and run using a
 pre-defined set of parameters corresponding to the LDC problem.
 After completion of the simulation, the shell script executes a Python script to read the output
 from ``SARAS`` and compare the horizontal and vertical velocity profiles across
 the geometric center of the square cavity.
-The corresponding results from `@Ghia:JCP1982` are also available with the installation,
+The corresponding results from [@Ghia:JCP1982] are also available with the installation,
 and this data is used by the Python script to show the match in profiles.
 
 The result from this test is plotted in Figure \ref{figure3}.
