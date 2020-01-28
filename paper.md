@@ -1,5 +1,5 @@
 ---
-title: 'SARAS: A General-Purpose PDE Solver for Fluid Dynamics'
+title: 'SARAS: A general-purpose PDE solver for fluid dynamics'
 
 tags:
   - C++
@@ -119,6 +119,21 @@ $$
 $$
 \mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t(\nabla p^*).
 $$
+The numerical implementation of the above procedure will be discussed next.
+
+# Numerical Method and Implementation
+``SARAS`` uses finite-difference method [@Ferziger:book:CFD] to calculate derivatives of the field variables.
+Presently the solver uses second-order central difference stencils to compute first and second derivatives.
+We use a highly optimized and fast array manipulation library, Blitz++ [@Veldhuizen:CP1998], for all array operations.
+Blitz++ also offers finite-difference stencils on uniformly spaced grids.
+``SARAS`` augments this feature with grid-transformation terms [@Anderson:book:CFD] to perform simulations on grids with non-uniform spacing.
+
+``SARAS`` offers a set of extensible boundary and initial conditions, as well as source terms.
+Presently the solver can switch between periodic, Neumann, and Dirichlet boundary conditions.
+There also exists a mixed boundary condition class, simulating a conducting heating plate on an adiabatic wall,
+similar to the numerical setup of [@Teimurazov:2017].
+Currently the solver is restricted to Cartesian grids, and the feasibility of extending its structure to
+solve for other geometries like cylindrical and spherical grids is being investigated.
 The solver also supports adaptive time-stepping, where the Courant-Friedrichs-Lewy (CFL) condition
 [@Courant:1928CFL] is used to dynamically compute the appropriate time-step from the velocity field.
 
