@@ -79,7 +79,8 @@ assumed constant and equal to unity.
 
 ![For the simulation of decaying turbulence on a $257^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
   (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
-  (b) plot of $E_u(k)$ vs $k$ at $t =1$. \label{figure1}](figure1.png)
+  (b) plot of $E_u(k)$ vs $k$ at $t =1$.
+  \label{figure1}](figure1.png)
 
 If the velocity and pressure field at time $t = n$ are denoted as $\mathbf{u}^n$ and $p^n$
 respectively, then the corresponding fields at the next time-step, $t = n+1$, namely
@@ -110,15 +111,16 @@ $$
 Presently the library offers the Full Multigrid (FMG) V-Cycle to solve the Poisson equation.
 Other methods like F-Cycle and W-Cycle are planned updates to the library in future.
 
-Finally, using the above computed value of pressure correction, the velocity and pressure fields corresponding to the next time-step can now be obtained as
+Finally, using the above computed value of pressure correction, the velocity and pressure fields
+corresponding to the next time-step can now be obtained as
 $$
 p^{n+1} = p^n + p^*,
 $$
 $$
 \mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t(\nabla p^*).
 $$
-The solver also supports adaptive time-stepping, where the Courant-Friedrichs-Lewy (CFL) condition [@Courant:1928CFL] is used to dynamically compute the appropriate time-step
-from the velocity field.
+The solver also supports adaptive time-stepping, where the Courant-Friedrichs-Lewy (CFL) condition
+[@Courant:1928CFL] is used to dynamically compute the appropriate time-step from the velocity field.
 
 ![For the simulation of decaying turbulence on a $257^3$ grid, vector plots of the velocity field,
   and density plots of the vertical component of vorticity ($\omega_z$) computed at the horizontal mid-plane:
@@ -160,7 +162,8 @@ prediction of Kolmogorov [@Kolmogorov:DANS1941Dissipation; @Kolmogorov:DANS1941S
 ![Velocity profiles from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines),
   plotted along with the data from [@Ghia:JCP1982] (blue stars):
   (a) The vertical profile of the x-component of velocity, $v_x$, along the line across the geometric center of the cavity
-  (b) The horizontal profile of the y-component of velocity, $v_y$, along the line across the geometric center of the cavity. \label{figure3}](figure3.png)
+  (b) The horizontal profile of the z-component of velocity, $v_z$, along the line across the geometric center of the cavity.
+  \label{figure3}](figure3.png)
 
 ## Problem 2
 We solve the two-dimensional lid-driven cavity (LDC) problem using ``SARAS``,
@@ -172,7 +175,7 @@ However, the top wall is moving laterally to the right with a constant velocity 
 and this serves as the reference velocity for non-dimensionalization of the problem.
 The length of the side of the cavity, $L = 1.0$, is the reference length.
 
-At the start of the simulation, the velocity of the fluid is zero throughout the domain.
+At the start of the simulation, the fluid is at zero velocity throughout the domain.
 Thus, the fluid inside the cavity is driven impulsively by the top lid at the start of the simulation.
 This results in the formation of a vortex at the upper-right corner of the cavity,
 and this vortex rapidly grows in size and occupies the entire bulk of the cavity.
@@ -181,7 +184,7 @@ The result output by ``SARAS`` at $t = 30$ is used for comparison,
 and the solver computes this solution with 4 MPI processes in under 12 minutes on a desktop workstation.
 This case is also used as a test case for validation of the solver after its installation.
 
-The bash and Python scripts used to run this test are supplied with the solver.
+The Bash and Python scripts used to run this test are supplied with the solver.
 Upon running the test script, the solver is compiled and run using a
 pre-defined set of parameters corresponding to the LDC problem.
 After completion of the simulation, the shell script executes a Python script to read the output
