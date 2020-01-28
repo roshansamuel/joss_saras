@@ -120,9 +120,10 @@ $$
 The solver also supports adaptive time-stepping, where the Courant-Friedrichs-Lewy (CFL) condition [@Courant:1928CFL] is used to dynamically compute the appropriate time-step
 from the velocity field.
 
-![For the flow simulation of decaying turbulence on a $257^3$ grid,
-  vector plots of the velocity field and density plots of the vertical vorticity field ($\omega_z$) computed at the horizontal mid plane at $z=1/2$:
-  for the data  from (a, c) ``TARANG``,  and (b, d) ``SARAS`` at $t=1$ and $t=3$. \label{figure2}](figure2.png)
+![For the simulation of decaying turbulence on a $257^3$ grid, vector plots of the velocity field,
+  and density plots of the vertical component of vorticity ($\omega_z$) computed at the horizontal mid-plane:
+  for the data from ``TARANG``(a, c), and ``SARAS``(b, d) at $t = 1$ (top row) and $t = 3$ (bottom row).
+  \label{figure2}](figure2.png)
 
 # Results
 We validate our code using two very well-known problems.
@@ -153,9 +154,11 @@ Besides, the flow profiles are also similar, as is evident from the density plot
 Here, the vertical component of vorticity, $\omega_z$, on the horizontal mid-plane is plotted at $t=1$ and $t=3$.
 In Figure \ref{figure1}(b), we plot the energy spectrum at $t=1$.
 The plot exhibits nearly similar multiscale evolution of the flow fields.
-Interestingly, in both the results the energy spectrum in the inertial range is closer to the $k^{-5/3}$ prediction of Kolmogorov [@Kolmogorov:DANS1941Dissipation; @Kolmogorov:DANS1941Structure]. 
+Interestingly, in both the results the energy spectrum in the inertial range is closer to the $k^{-5/3}$
+prediction of Kolmogorov [@Kolmogorov:DANS1941Dissipation; @Kolmogorov:DANS1941Structure]. 
 
-![Results from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines), along with the data from [@Ghia:JCP1982] (blue stars):
+![Velocity profiles from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines),
+  plotted along with the data from [@Ghia:JCP1982] (blue stars):
   (a) The vertical profile of the x-component of velocity, $v_x$, along the line across the geometric center of the cavity
   (b) The horizontal profile of the y-component of velocity, $v_y$, along the line across the geometric center of the cavity. \label{figure3}](figure3.png)
 
