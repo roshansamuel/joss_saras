@@ -77,11 +77,6 @@ the forcing term, and $\nu$ is the kinematic viscosity of the fluid.
 The fluid is assumed incompressible. Hence $\nabla\cdot\mathbf{u} = 0$, and density is
 assumed constant and equal to unity.
 
-![For the simulation of decaying turbulence on a $257^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
-  (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
-  (b) plot of $E_u(k)$ vs $k$ at $t =1$.
-  \label{figure1}](figure1.png)
-
 If the velocity and pressure field at time $t = n$ are denoted as $\mathbf{u}^n$ and $p^n$
 respectively, then the corresponding fields at the next time-step, $t = n+1$, namely
 $\mathbf{u}^{n+1}$ and $p^{n+1}$, can be calculated as described next [@Patankar:1972IJHMT].
@@ -137,10 +132,10 @@ solve for other geometries like cylindrical and spherical grids is being investi
 The solver also supports adaptive time-stepping, where the Courant-Friedrichs-Lewy (CFL) condition
 [@Courant:1928CFL] is used to dynamically compute the appropriate time-step from the velocity field.
 
-![For the simulation of decaying turbulence on a $257^3$ grid, vector plots of the velocity field,
-  and density plots of the vertical component of vorticity ($\omega_z$) computed at the horizontal mid-plane:
-  for the data from ``TARANG``(a, c), and ``SARAS``(b, d) at $t = 1$ (top row) and $t = 3$ (bottom row).
-  \label{figure2}](figure2.png)
+![For the simulation of decaying turbulence on a $257^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
+  (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
+  (b) plot of $E_u(k)$ vs $k$ at $t =1$.
+  \label{figure1}](figure1.png)
 
 # Results
 We validate our code using two very well-known problems.
@@ -163,6 +158,11 @@ The initial Reynolds number of the flow is $\mathrm{Re} = 1000$.
 We choose a constant $dt = 0.001$ for time-integration.
 Besides, we use a uniformly spaced mesh along all the three directions. 
 
+![For the simulation of decaying turbulence on a $257^3$ grid, vector plots of the velocity field,
+  and density plots of the vertical component of vorticity ($\omega_z$) computed at the horizontal mid-plane:
+  for the data from ``TARANG``(a, c), and ``SARAS``(b, d) at $t = 1$ (top row) and $t = 3$ (bottom row).
+  \label{figure2}](figure2.png)
+
 Our results exhibit similarities with those obtained from the pseudo-spectral code, ``TARANG`` [@Chatterjee:JPDC2018].
 The time-evolution of total kinetic energy ($\int d{\bf r} (u^2/2)$) is plotted in Figure \ref{figure1}(a).
 The results from ``SARAS`` closely match the values from ``TARANG``,
@@ -174,12 +174,6 @@ The plot exhibits nearly similar multiscale evolution of the flow fields.
 Interestingly, in both the results the energy spectrum in the inertial range is closer to the $k^{-5/3}$
 prediction of Kolmogorov [@Kolmogorov:DANS1941Dissipation; @Kolmogorov:DANS1941Structure]. 
 
-![Velocity profiles from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines),
-  plotted along with the data from [@Ghia:JCP1982] (blue stars):
-  (a) The vertical profile of the x-component of velocity, $v_x$, along the line across the geometric center of the cavity
-  (b) The horizontal profile of the z-component of velocity, $v_z$, along the line across the geometric center of the cavity.
-  \label{figure3}](figure3.png)
-
 ## Problem 2
 We solve the two-dimensional lid-driven cavity (LDC) problem using ``SARAS``,
 and compare the results with those of [@Ghia:JCP1982].
@@ -189,6 +183,12 @@ with no-slip boundary conditions on all the four walls.
 However, the top wall is moving laterally to the right with a constant velocity of $U = 1.0$,
 and this serves as the reference velocity for non-dimensionalization of the problem.
 The length of the side of the cavity, $L = 1.0$, is the reference length.
+
+![Velocity profiles from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines),
+  plotted along with the data from [@Ghia:JCP1982] (blue stars):
+  (a) The vertical profile of the x-component of velocity, $v_x$, along the line across the geometric center of the cavity
+  (b) The horizontal profile of the z-component of velocity, $v_z$, along the line across the geometric center of the cavity.
+  \label{figure3}](figure3.png)
 
 At the start of the simulation, the fluid is at zero velocity throughout the domain.
 Thus, the fluid inside the cavity is driven impulsively by the top lid at the start of the simulation.
