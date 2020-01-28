@@ -135,6 +135,10 @@ The solver also supports adaptive time-stepping, where the Courant-Friedrichs-Le
 # Results
 We validate our code using two very well-known problems.
 We simulate these problems using ``SARAS`` and compare the results with standard and validated solutions. 
+We also use an extensively validated solver, ``TARANG`` [@Verma:Pramana2013tarang],
+to measure the accuracy of ``SARAS``.
+Moreover, ``TARANG`` uses a highly accurate pseudo-spectral method [@Canuto:book:SpectralFluid],
+and has been benchmarked and scaled up to 196608 cores [@Chatterjee:JPDC2018].
 
 ![For the simulation of decaying turbulence on a $257^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
   (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
@@ -158,7 +162,7 @@ The initial Reynolds number of the flow is $\mathrm{Re} = 1000$.
 We choose a constant $dt = 0.001$ for time-integration.
 Besides, we use a uniformly spaced mesh along all the three directions. 
 
-Our results exhibit similarities with those obtained from the pseudo-spectral code, ``TARANG`` [@Chatterjee:JPDC2018].
+Our results exhibit similarities with those obtained from ``TARANG``.
 The time-evolution of total kinetic energy ($\int d{\bf r} (u^2/2)$) is plotted in Figure \ref{figure1}(a).
 The results from ``SARAS`` closely match the values from ``TARANG``,
 with a maximum difference between the two energies of approximately $2.4\%$.
