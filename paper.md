@@ -79,12 +79,12 @@ the forcing term, and $\nu$ is the kinematic viscosity of the fluid.
 The fluid is assumed to be incompressible. Hence $\nabla\cdot\mathbf{u} = 0$, and density is
 constant (chosen to be unity).
 
-If the velocity and pressure field at time $t = t_n$ are denoted as $\mathbf{u}^n$ and $p^n$
+If the velocity and pressure field at time $t = t_n$ are denoted as $\mathbf{u}_n$ and $p_n$
 respectively, then the corresponding fields at the next time-step, $t = t_{n+1}$, namely
-$\mathbf{u}^{n+1}$ and $p^{n+1}$, can be calculated as described below
+$\mathbf{u}_{n+1}$ and $p_{n+1}$, can be calculated as described below
 [@Patankar:1972IJHMT; @Anderson:book:CFD; @Ferziger:book:CFD].
 We compute an intermediate velocity field using the known values,
-$\mathbf{u}^n$ and $p^n$, as
+$\mathbf{u}_n$ and $p_n$, as
 $$
 \mathbf{u}^* = \mathbf{u}_{n} + \Delta t\left[\nu\nabla^2 \left( \frac{\mathbf{u}_n + \mathbf{u}^*}{2}\right) - \mathbf{u}_n.\nabla\mathbf{u}_n - \nabla p_n\right].
 $$
@@ -137,7 +137,7 @@ We simulate these problems using ``SARAS`` and compare the results with standard
 
 ## Problem 1
 We solve the two-dimensional lid-driven cavity (LDC) problem using ``SARAS``,
-and compare the results with those of [@Ghia:JCP1982].
+and compare the results with those of @Ghia:JCP1982.
 LDC is an important fluid system and it serves as a benchmark for testing numerical methods.
 This system consists of a square cavity of dimension $1 \times 1$
 with no-slip boundary conditions on all the four walls.
@@ -151,19 +151,19 @@ This results in the formation of a vortex at the upper-right corner of the cavit
 and this vortex rapidly grows in size and occupies the entire region of the cavity.
 For the simulation we employ a $129 \times 129$ grid, and carry it out till $t = 30$.
 The solver computes this solution using 4 MPI processes in approximately 12 minutes on an Intel workstation.
-The output by ``SARAS`` at the final time is used for comparison with the results of Ghia et al. [@Ghia:JCP1982]
+The output by ``SARAS`` at the final time is used for comparison with the results of @Ghia:JCP1982
 
 In the website we supply the Bash and Python scripts to compile and run this test case.
-After automatic execution of SARAS, a Python script reads the output
+After automatic execution of ``SARAS``, a Python script reads the output
 from ``SARAS`` and compares the horizontal and vertical velocity profiles across
 the geometric center of the square cavity.
-The corresponding results from [@Ghia:JCP1982] are also available with the installation.
+The corresponding results from @Ghia:JCP1982 are also available with the installation.
 We compare the two results and exhibit them in Figure \ref{figure1}.
-We observe that the profiles computed by ``SARAS`` match very well with those by Ghia et al. [@Ghia:JCP1982], thus providing a strong validation for our code.
+We observe that the profiles computed by ``SARAS`` match very well with those by @Ghia:JCP1982, thus providing a strong validation for our code.
 This quick validation of the solver, which can be done as a part of its installation, is one of the strengths of this package.
 
 ![Velocity profiles from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines),
-  plotted along with the data from [@Ghia:JCP1982] (blue stars):
+  plotted along with the data from @Ghia:JCP1982 (blue stars):
   (a) The vertical profile of the x-component of velocity, $v_x$, along the line across the geometric center of the cavity
   (b) The horizontal profile of the z-component of velocity, $v_z$, along the line across the geometric center of the cavity.
   \label{figure1}](ldc_profiles.png)
@@ -185,8 +185,8 @@ The initial Reynolds number of the flow is $\mathrm{Re} = 1000$.
 We choose a constant $dt = 0.001$ for time-integration.
 Besides, we use a uniform mesh along all the three directions. 
 
-To validate the accuracy of the finite difference scheme of SARAS,
-we compare the results of SARAS with those of a pseudo-spectral code ``TARANG``,
+To validate the accuracy of the finite difference scheme of ``SARAS``,
+we compare the results of ``SARAS`` with those of a pseudo-spectral code ``TARANG``,
 which has been benchmarked and scaled up to 196608 cores of Cray XC40,
 Shaheen II of KAUST [@Chatterjee:JPDC2018; @Verma:Pramana2013tarang].
 Note that pseudo-spectral method yields very accurate derivatives [@Canuto:book:SpectralFluid].
