@@ -40,25 +40,27 @@ bibliography: paper.bib
 
 The laws that govern natural systems can often be modelled mathematically using
 partial differential equations (PDEs).
-Usually the resultant PDEs are not amenable to analytical tools for
-solving them, and numerical techniques remain the only resort in such cases.
-As a result, efficiently solving PDEs numerically is a primary step towards
-understanding the physics of various systems.
-``SARAS`` is a general-purpose PDE solver written in object-oriented C++.
-In ``SARAS``, the underlying mathematical constructs used to define a PDE, like
-vector and scalar fields, are defined as classes.
-Moreover, vector calculus operations associated with such fields, like gradient and
-divergence, are defined as functions of the classes.
+Usually the resultant PDEs are not solvable analytically,
+hence numerical solutions become important in such cases.
+As a result, efficient numerical solutions of PDEs are important
+in understanding such systems.
+In this paper we briefly describe the design and validation
+of a finite difference solver ``SARAS``.
 
+``SARAS`` is a general-purpose PDE solver based on finite difference
+method [@Anderson:book:CFD; @Ferziger:book:CFD], written in an object-oriented structure in C++.
+In ``SARAS``, the underlying mathematical constructs like vector and scalar fields
+are defined as classes.
+Moreover, vector calculus operations associated with such fields, like gradient and
+divergence, are defined using these classes.
 This design makes the code intuitive, allowing users to quickly cast PDEs into
-readable code.
-The initial conditions, boundary conditions, and source/forcing terms, which appear
-commonly in many PDEs, are also defined as derived classes of base ``initial``,
-``boundary`` and ``force`` classes.
-These classes are written to be readily extensible, so that users can add custom
+readable codes.
+The initial conditions, boundary conditions, and source/forcing terms
+are implemented using ``initial``, ``boundary`` and ``force`` classes.
+These classes are readily extensible, so that users can add custom
 initial conditions, source terms, and so on.
 
-``SARAS`` also includes solvers for hydrodynamic flow, namely the incompressible
+``SARAS`` includes solvers for hydrodynamic flows, namely the incompressible
 Navier-Stokes initial value problem (IVP), as well as for scalar convection,
 like Rayleigh Benard Convection.
 Presently, we use semi-implicit Crank-Nicholson [@Crank:1947] method for time-advancing
@@ -74,31 +76,29 @@ $$
 $$
 where $\mathbf{u}$ is the velocity field, $p$ is the pressure field, $\mathbf{f}$ is
 the forcing term, and $\nu$ is the kinematic viscosity of the fluid.
-The fluid is assumed incompressible. Hence $\nabla\cdot\mathbf{u} = 0$, and density is
-assumed constant and equal to unity.
+The fluid is assumed to be incompressible. Hence $\nabla\cdot\mathbf{u} = 0$, and density is
+constant (chosen to be unity).
 
-If the velocity and pressure field at time $t = n$ are denoted as $\mathbf{u}^n$ and $p^n$
-respectively, then the corresponding fields at the next time-step, $t = n+1$, namely
-$\mathbf{u}^{n+1}$ and $p^{n+1}$, can be calculated as described next [@Patankar:1972IJHMT].
-Initially, an intermediate velocity field is calculated using the known values,
+If the velocity and pressure field at time $t = t_n$ are denoted as $\mathbf{u}^n$ and $p^n$
+respectively, then the corresponding fields at the next time-step, $t = t_{n+1}$, namely
+$\mathbf{u}^{n+1}$ and $p^{n+1}$, can be calculated as described below
+[@Patankar:1972IJHMT; @Anderson:book:CFD; @Ferziger:book:CFD].
+We compute an intermediate velocity field using the known values,
 $\mathbf{u}^n$ and $p^n$, as
 $$
 \mathbf{u}^* = \mathbf{u}_{n} + \Delta t\left[\nu\nabla^2 \left( \frac{\mathbf{u}_n + \mathbf{u}^*}{2}\right) - \mathbf{u}_n.\nabla\mathbf{u}_n - \nabla p_n\right].
 $$
-The forcing term has been neglected for simplicity.
-Note that the diffusion term (also called the viscous term) has been split into two, with half
-the contribution from the velocity field at $t = n$, and the other half attributed to the
-guessed velocity field, $\mathbf{u}^*$.
-This results in the following implicit equation,
+The forcing term has been neglected here for simplicity.
+Note that the diffusion term (also called the viscous term) is handled semi-implicitly,
+with equal contribution from $\mathbf{u}_n$ and $\mathbf{u}^*$, as given below:
 $$
 \mathbf{u}^* - \Delta t\left[\frac{\nu\nabla^2\mathbf{u}^*}{2} \right ] = \mathbf{u}_{n} + \Delta t\left[\frac{\nu\nabla^2\mathbf{u}_n}{2} - \mathbf{u}_n.\nabla\mathbf{u}_n - \nabla p_n\right].
 $$
 The above equation has to be solved iteratively, and this is achieved through
-OpenMP parallelized Jacobi iterations.
-The intermediate velocity field, $\mathbf{u}^*$, will not satisfy the continuity equation,
-and requires to be corrected appropriately.
-This correction is obtained from the pressure correction term, which is in turn computed from
-the pressure Poisson equation,
+OpenMP-parallelized Jacobi iterations.
+The intermediate velocity field, $\mathbf{u}^*$, does not satisfy the continuity equation,
+and requires appropriate correction.
+This correction is obtained from the pressure correction term, which is calculated using the pressure Poisson equation,
 $$
 \nabla^2 p^* = \frac{\nabla.\mathbf{u}^*}{\Delta t}.
 $$
@@ -106,15 +106,15 @@ $$
 Presently the library offers the Full Multigrid (FMG) V-Cycle to solve the Poisson equation.
 Other methods like F-Cycle and W-Cycle are planned updates to the library in future.
 
-Finally, using the above computed value of pressure correction, the velocity and pressure fields
-corresponding to the next time-step can now be obtained as
+Finally, using the above pressure correction, the velocity and pressure fields
+corresponding to the next time-step are obtained as
 $$
-p^{n+1} = p^n + p^*,
+p_{n+1} = p_n + p^*,
 $$
 $$
-\mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t(\nabla p^*).
+\mathbf{u}_{n+1} = \mathbf{u}^* - \Delta t(\nabla p^*).
 $$
-The numerical implementation of the above procedure will be discussed next.
+The numerical implementation of the above procedure will be discussed in the next section.
 
 # Numerical Method and Implementation
 ``SARAS`` uses finite-difference method [@Ferziger:book:CFD] to calculate derivatives of the field variables.
@@ -125,29 +125,52 @@ Blitz++ also offers finite-difference stencils on uniformly spaced grids.
 
 ``SARAS`` offers a set of extensible boundary and initial conditions, as well as source terms.
 Presently the solver can switch between periodic, Neumann, and Dirichlet boundary conditions.
-There also exists a mixed boundary condition class, simulating a conducting heating plate on an adiabatic wall,
-similar to the numerical setup of [@Teimurazov:2017].
-Currently the solver is restricted to Cartesian grids, and the feasibility of extending its structure to
-solve for other geometries like cylindrical and spherical grids is being investigated.
+There also exists a mixed boundary condition class that can simulate many practical applications,
+such as a conducting heating plate on an adiabatic wall [@Teimurazov:2017].
+Currently the solver is restricted to Cartesian grids, but it will be extended to cylindrical, toroidal, and spherical grids in the future.
 The solver also supports adaptive time-stepping, where the Courant-Friedrichs-Lewy (CFL) condition
-[@Courant:1928CFL] is used to dynamically compute the appropriate time-step from the velocity field.
+[@Courant:1928CFL] is used to dynamically compute the appropriate time-step.
 
 # Results
-We validate our code using two very well-known problems.
-We simulate these problems using ``SARAS`` and compare the results with standard and validated solutions. 
-We also use an extensively validated solver, ``TARANG`` [@Verma:Pramana2013tarang],
-to measure the accuracy of ``SARAS``.
-Moreover, ``TARANG`` uses a highly accurate pseudo-spectral method [@Canuto:book:SpectralFluid],
-and has been benchmarked and scaled up to 196608 cores [@Chatterjee:JPDC2018].
-
-![For the simulation of decaying turbulence on a $257^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
-  (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
-  (b) plot of $E_u(k)$ vs $k$ at $t =1$.
-  \label{figure1}](figure1.png)
+We validate our code using two very well-known test problems: lid-driven cavity and decaying turbulence.
+We simulate these problems using ``SARAS`` and compare the results with standard and validated solutions.
 
 ## Problem 1
+We solve the two-dimensional lid-driven cavity (LDC) problem using ``SARAS``,
+and compare the results with those of [@Ghia:JCP1982].
+LDC is an important fluid system and it serves as a benchmark for testing numerical methods.
+This system consists of a square cavity of dimension $1 \times 1$
+with no-slip boundary conditions on all the four walls.
+However, the top wall moves laterally to the right with a constant velocity of $U = 1.0$
+that serves as the reference velocity for non-dimensionalization of the problem.
+The length of the side of the cavity, $L = 1.0$, is the reference length.
+The Reynolds number of the flow is approximately $\mathrm{Re} \approx 1000$.
+
+At the start of the simulation, the fluid, which is at rest, is driven impulsively by the top lid.
+This results in the formation of a vortex at the upper-right corner of the cavity,
+and this vortex rapidly grows in size and occupies the entire region of the cavity.
+For the simulation we employ a $129 \times 129$ grid, and carry it out till $t = 30$.
+The solver computes this solution using 4 MPI processes in approximately 12 minutes on an Intel workstation.
+The output by ``SARAS`` at the final time is used for comparison with the results of Ghia et al. [@Ghia:JCP1982]
+
+In the website we supply the Bash and Python scripts to compile and run this test case.
+After automatic execution of SARAS, a Python script reads the output
+from ``SARAS`` and compares the horizontal and vertical velocity profiles across
+the geometric center of the square cavity.
+The corresponding results from [@Ghia:JCP1982] are also available with the installation.
+We compare the two results and exhibit them in Figure \ref{figure1}.
+We observe that the profiles computed by ``SARAS`` match very well with those by Ghia et al. [@Ghia:JCP1982], thus providing a strong validation for our code.
+This quick validation of the solver, which can be done as a part of its installation, is one of the strengths of this package.
+
+![Velocity profiles from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines),
+  plotted along with the data from [@Ghia:JCP1982] (blue stars):
+  (a) The vertical profile of the x-component of velocity, $v_x$, along the line across the geometric center of the cavity
+  (b) The horizontal profile of the z-component of velocity, $v_z$, along the line across the geometric center of the cavity.
+  \label{figure1}](ldc_profiles.png)
+
+## Problem 2
 We simulate decaying turbulence using ``SARAS`` with Taylor-Green vortex [@Schranner:CP2013] as the initial condition.
-The initial condition for the Taylor-Green velocity field is given by
+That is,
 $$
 \mathbf{u}(x,y,z, t=0) = u_{0} \begin{bmatrix}
         \sin(2 \pi k_{0} x) \cos(2 \pi k_{0}y) \cos(2 \pi k_{0}z) \\
@@ -156,71 +179,54 @@ $$
 \end{bmatrix},
 $$
 where $u_0 = 1$ and $k_0 = 1$.
-We perform our simulation in a periodic box of size $1 \times 1 \times 1$ with a grid resolution of $257^{3}$, up to $t = 3.0$.
-Here nondimensionalization of time is performed by $L/u_0$, where $L=1$.
+We perform our simulation in a periodic box of size $1 \times 1 \times 1$ ($L=1$) with a grid resolution of $257^{3}$ up to $t = 3.0$.
+Here, we nondimensionalize time using $L/u_0$.
 The initial Reynolds number of the flow is $\mathrm{Re} = 1000$.
 We choose a constant $dt = 0.001$ for time-integration.
-Besides, we use a uniformly spaced mesh along all the three directions. 
+Besides, we use a uniform mesh along all the three directions. 
 
-Our results exhibit similarities with those obtained from ``TARANG``.
-The time-evolution of total kinetic energy ($\int d{\bf r} (u^2/2)$) is plotted in Figure \ref{figure1}(a).
-The results from ``SARAS`` closely match the values from ``TARANG``,
-with a maximum difference between the two energies of approximately $2.4\%$.
-Besides, the flow profiles are also similar, as is evident from the density plots of Figure \ref{figure2}.
-Here, the vertical component of vorticity, $\omega_z$, on the horizontal mid-plane is plotted at $t=1$ and $t=3$.
-In Figure \ref{figure1}(b), we plot the energy spectrum at $t=1$.
-The plot exhibits nearly similar multiscale evolution of the flow fields.
-Interestingly, in both the results the energy spectrum in the inertial range is closer to the $k^{-5/3}$
-prediction of Kolmogorov [@Kolmogorov:DANS1941Dissipation; @Kolmogorov:DANS1941Structure]. 
+To validate the accuracy of the finite difference scheme of SARAS,
+we compare the results of SARAS with those of a pseudo-spectral code ``TARANG``,
+which has been benchmarked and scaled up to 196608 cores of Cray XC40,
+Shaheen II of KAUST [@Chatterjee:JPDC2018; @Verma:Pramana2013tarang].
+Note that pseudo-spectral method yields very accurate derivatives [@Canuto:book:SpectralFluid].
+We perform our spectral simulation using the same initial condition and grid resolution as above, up to $t = 3.0$.
+The comparison of the results from the two codes is discussed below.
+Comparison of ``SARAS`` results with those of ``TARANG`` provides another validation of ``SARAS``.
+
+The results of ``TARANG`` and ``SARAS`` are quite similar, as exhibited in Figures \ref{figure2} and \ref{figure3}.
+In Figure \ref{figure2}(a) we exhibit the plots of the total energy ($\int d{\bf r} u^2/2$) vs. time for both the runs.
+As is evident from the plots, both the codes yield very similar evolution profiles for the total energy.
+In addition, we also compute the energy spectra for the codes at $t=1$.
+As shown in Figure \ref{figure2}(b), both the energy spectra are very similar.
+Interestingly, in both the plots, the energy spectra in the inertial range are close to the $k^{-5/3}$
+power law [@Kolmogorov:DANS1941Dissipation; @Verma:book:ET].
+
+![For the simulation of decaying turbulence on a $257^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
+  (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
+  (b) plot of $E_u(k)$ vs $k$ at $t =1$.
+  \label{figure2}](tgv_spectrum.png)
+
+Figure \ref{figure3} exhibits the vertical component of vorticity, $\omega_z$, on the horizontal mid-plane ($z=1/2$) at $t=1$ and $t=3$.
+Clearly, the results of ``TARANG`` and ``SARAS`` are very similar.
 
 ![For the simulation of decaying turbulence on a $257^3$ grid, vector plots of the velocity field,
-  and density plots of the vertical component of vorticity ($\omega_z$) computed at the horizontal mid-plane:
+  and the density plots of the vertical component of vorticity ($\omega_z$) computed at the horizontal mid-plane:
   for the data from ``TARANG``(a, c), and ``SARAS``(b, d) at $t = 1$ (top row) and $t = 3$ (bottom row).
-  \label{figure2}](figure2.png)
+  \label{figure3}](tgv_vorticity.png)
 
-## Problem 2
-We solve the two-dimensional lid-driven cavity (LDC) problem using ``SARAS``,
-and compare the results with those of [@Ghia:JCP1982].
-LDC is an important fluid dynamic system serving as a benchmark for testing numerical methods.
-This system consists of a square cavity of dimension $1 \times 1$
-with no-slip boundary conditions on all the four walls.
-However, the top wall is moving laterally to the right with a constant velocity of $U = 1.0$,
-and this serves as the reference velocity for non-dimensionalization of the problem.
-The length of the side of the cavity, $L = 1.0$, is the reference length.
 
-At the start of the simulation, the fluid is at zero velocity throughout the domain.
-Thus, the fluid inside the cavity is driven impulsively by the top lid at the start of the simulation.
-This results in the formation of a vortex at the upper-right corner of the cavity,
-and this vortex rapidly grows in size and occupies the entire bulk of the cavity.
-We simulate this on a $129 \times 129$ grid at $\mathrm{Re} = 1000$.
-The result output by ``SARAS`` at $t = 30$ is used for comparison,
-and the solver computes this solution with 4 MPI processes in under 12 minutes on a desktop workstation.
-This case is also used as a test case for validation of the solver after its installation.
+# Conclusions
 
-![Velocity profiles from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines),
-  plotted along with the data from [@Ghia:JCP1982] (blue stars):
-  (a) The vertical profile of the x-component of velocity, $v_x$, along the line across the geometric center of the cavity
-  (b) The horizontal profile of the z-component of velocity, $v_z$, along the line across the geometric center of the cavity.
-  \label{figure3}](figure3.png)
-
-The Bash and Python scripts used to run this test are supplied with the solver.
-Upon running the test script, the solver is compiled and run using a
-pre-defined set of parameters corresponding to the LDC problem.
-After completion of the simulation, the shell script executes a Python script to read the output
-from ``SARAS`` and compare the horizontal and vertical velocity profiles across
-the geometric center of the square cavity.
-The corresponding results from [@Ghia:JCP1982] are also available with the installation,
-and this data is used by the Python script to show the match in profiles.
-
-The result from this test is plotted in Figure \ref{figure3}.
-We observe that the profile computed by ``SARAS`` matches the results from the literature very well.
-This quick validation of the solver, which can be done as a part of its installation, is one of the strengths of this package.
+This paper provides a brief description and validations tests of a new parallel finite-difference code ``SARAS``.
+``SARAS`` has been designed as a general PDE solver using the object-oriented features of C++.
+We validate ``SARAS`` using two test cases: lid-driven cavity and decaying turbulence.
 
 
 # Acknowledgements
 
-We acknowledge contributions from Gaurav Gautham, Saurav Bhattacharjee, and Rishabh Sahu,
-and support from Prof Fahad Anwer during the genesis of this project.
+We gratefully acknowledge the contributions from Gaurav Gautham, Saurav Bhattacharjee, Rishabh Sahu,
+and Fahad Anwer during the development of SARAS.
 
 ---
 
