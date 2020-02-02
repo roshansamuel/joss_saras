@@ -213,7 +213,7 @@ Clearly, the results of ``TARANG`` and ``SARAS`` are very similar.
 ![For the simulation of decaying turbulence on a $257^3$ grid, vector plots of the velocity field,
   and the density plots of the vertical component of vorticity ($\omega_z$) computed at the horizontal mid-plane:
   for the data from ``TARANG``(a, c), and ``SARAS``(b, d) at $t = 1$ (top row) and $t = 3$ (bottom row).
-  \label{figure3}](tgv_vorticity.png)
+  \label{figure3}](tgv_velocity.png)
 
 
 # Conclusions
