@@ -103,7 +103,7 @@ $$
 \nabla^2 p^* = \frac{\nabla.\mathbf{u}^*}{\Delta t}.
 $$
 ``SARAS`` uses a Geometric Multigrid library to solve the above equation [@Wesseling:MG2004; @Briggs:MG2000].
-Presently the library offers the Full Multigrid (FMG) V-Cycle to solve the Poisson equation.
+Presently the library employs the Full Multigrid (FMG) V-Cycle to solve the Poisson equation.
 Other methods like F-Cycle and W-Cycle are planned updates to the library in future.
 
 Finally, using the above pressure correction, the velocity and pressure fields
@@ -197,21 +197,21 @@ Comparison of ``SARAS`` results with those of ``TARANG`` provides another valida
 The results of ``TARANG`` and ``SARAS`` are quite similar, as exhibited in Figures \ref{figure2} and \ref{figure3}.
 In Figure \ref{figure2}(a) we exhibit the plots of the total energy ($\int d{\bf r} u^2/2$) vs. time for both the runs.
 As is evident from the plots, both the codes yield very similar evolution profiles for the total energy.
-In addition, we also compute the energy spectra for the codes at $t=1$.
+In addition, we also compute the energy spectra for the results at $t=1$.
 As shown in Figure \ref{figure2}(b), both the energy spectra are very similar.
 Interestingly, in both the plots, the energy spectra in the inertial range are close to the $k^{-5/3}$
 power law [@Kolmogorov:DANS1941Dissipation; @Verma:book:ET].
 
-![For the simulation of decaying turbulence on a $257^3$ grid with ``TARANG`` (red lines) and ``SARAS`` (black-dashed lines):
+![For the simulation of decaying turbulence on a $257^3$ grid with ``TARANG`` (thick blue lines) and ``SARAS`` (red-dashed lines):
   (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
   (b) plot of $E_u(k)$ vs $k$ at $t =1$.
   \label{figure2}](tgv_spectrum.png)
 
-Figure \ref{figure3} exhibits the vertical component of vorticity, $\omega_z$, on the horizontal mid-plane ($z=1/2$) at $t=1$ and $t=3$.
+Figure \ref{figure3} exhibits the magnitude of velocity, $|\mathbf{u}|$, on the horizontal mid-plane ($z=1/2$) at $t=1$ and $t=3$.
 Clearly, the results of ``TARANG`` and ``SARAS`` are very similar.
 
 ![For the simulation of decaying turbulence on a $257^3$ grid, vector plots of the velocity field,
-  and the density plots of the vertical component of vorticity ($\omega_z$) computed at the horizontal mid-plane:
+  and the density plots of the magnitude of velocity ($|\mathbf{u}|$) computed at the horizontal mid-plane:
   for the data from ``TARANG``(a, c), and ``SARAS``(b, d) at $t = 1$ (top row) and $t = 3$ (bottom row).
   \label{figure3}](tgv_velocity.png)
 
