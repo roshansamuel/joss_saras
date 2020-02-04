@@ -43,7 +43,7 @@ partial differential equations (PDEs).
 Usually the resultant PDEs are not solvable analytically,
 hence numerical solutions become important in such cases.
 As a result, efficient numerical solutions of PDEs are important
-in understanding such systems.
+for understanding such systems.
 In this paper we briefly describe the design and validation
 of a finite difference solver ``SARAS``.
 
@@ -57,7 +57,7 @@ This design makes the code intuitive, allowing users to quickly cast PDEs into
 readable codes.
 The initial conditions, boundary conditions, and source/forcing terms
 are implemented using ``initial``, ``boundary`` and ``force`` classes.
-These classes are readily extensible, so that users can add custom
+These classes are readily extensible so that users can add custom
 initial conditions, source terms, and so on.
 
 ``SARAS`` includes solvers for hydrodynamic flows, namely the incompressible
@@ -164,8 +164,8 @@ This quick validation of the solver, which can be done as a part of its installa
 
 ![Velocity profiles from the simulation of lid-driven cavity on a $129^2$ grid with ``SARAS`` (orange lines),
   plotted along with the data from @Ghia:JCP1982 (blue stars):
-  (a) The vertical profile of the x-component of velocity, $v_x$, along the line across the geometric center of the cavity
-  (b) The horizontal profile of the z-component of velocity, $v_z$, along the line across the geometric center of the cavity.
+  (a) The vertical profile of the x-component of velocity, $u_x$, along the line across the geometric center of the cavity
+  (b) The horizontal profile of the z-component of velocity, $u_z$, along the line across the geometric center of the cavity.
   \label{figure1}](ldc_profiles.png)
 
 ## Problem 2
