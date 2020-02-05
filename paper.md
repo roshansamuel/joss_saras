@@ -169,7 +169,7 @@ This quick validation of the solver, which can be done as a part of its installa
   \label{figure1}](ldc_profiles.png)
 
 ## Problem 2
-We simulate decaying turbulence using ``SARAS`` with Taylor-Green vortex [@Bull:AIAA2015] as the initial condition.
+We simulate decaying turbulence using ``SARAS`` with Taylor-Green vortex [Taylor:RSPA1937] as the initial condition.
 That is,
 $$
 \mathbf{u}(x,y,z, t=0) = u_{0} \begin{bmatrix}
