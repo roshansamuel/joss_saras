@@ -32,7 +32,7 @@ affiliations:
 
 date: 15 January 2020
 
-bibliography: paper.bib
+bibliography: resources/paper.bib
 
 ---
 
@@ -166,7 +166,7 @@ This quick validation of the solver, which can be done as a part of its installa
   plotted along with the data from @Ghia:JCP1982 (blue stars):
   (a) The vertical profile of the x-component of velocity, $u_x$, along the line across the geometric center of the cavity
   (b) The horizontal profile of the z-component of velocity, $u_z$, along the line across the geometric center of the cavity.
-  \label{figure1}](ldc_profiles.png)
+  \label{figure1}](resources/ldc_profiles.png)
 
 ## Problem 2
 We simulate decaying turbulence using ``SARAS`` with Taylor-Green vortex [@Taylor:RSPA1937] as the initial condition.
@@ -205,7 +205,7 @@ power law [@Kolmogorov:DANS1941Dissipation; @Verma:book:ET].
 ![For the simulation of decaying turbulence on a $257^3$ grid with ``TARANG`` (thick blue lines) and ``SARAS`` (red-dashed lines):
   (a) plot of the total energy $E_u= \int d{\bf r} u^2/2$ vs $t$,
   (b) plot of $E_u(k)$ vs $k$ at $t =1$.
-  \label{figure2}](tgv_spectrum.png)
+  \label{figure2}](resources/tgv_spectrum.png)
 
 Figure \ref{figure3} exhibits the magnitude of velocity, $|\mathbf{u}|$, on the horizontal mid-plane ($z=1/2$) at $t=1$ and $t=3$.
 Clearly, the results of ``TARANG`` and ``SARAS`` are very similar.
@@ -213,7 +213,7 @@ Clearly, the results of ``TARANG`` and ``SARAS`` are very similar.
 ![For the simulation of decaying turbulence on a $257^3$ grid, vector plots of the velocity field,
   and the density plots of the magnitude of velocity ($|\mathbf{u}|$) computed at the horizontal mid-plane:
   for the data from ``TARANG``(a, c), and ``SARAS``(b, d) at $t = 1$ (top row) and $t = 3$ (bottom row).
-  \label{figure3}](tgv_velocity.png)
+  \label{figure3}](resources/tgv_velocity.png)
 
 
 # Conclusions
